@@ -1,9 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using TrilhaApiDesafio.Context;
 using TrilhaApiDesafio.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrilhaApiDesafio.Controllers
 {
+    /// <summary>
+    /// Controller responsável por gerenciar as tarefas, permitindo criar, ler, atualizar e deletar tarefas.
+    /// </summary>
+    /// <param name="context"></param>
     [ApiController]
     [Route("[controller]")]
     public class TarefaController(OrganizadorContext context) : ControllerBase
@@ -11,67 +16,98 @@ namespace TrilhaApiDesafio.Controllers
         private readonly OrganizadorContext _context = context;
 
         [HttpGet("{id}")]
-        public IActionResult ObterPorId(int id)
+        public async Task<IActionResult> ObterPorId(int id)
         {
-            var tarefa = _context.Tarefas.Find(id);
+            var tarefa = await _context.Tarefas.FindAsync(id);
 
-            if (tarefa == null) 
+            if (tarefa == null)
                 return NotFound();
             return Ok(tarefa);
         }
 
-        [HttpGet("ObterTodos")]
-        public IActionResult ObterTodos()
+        /// <summary>
+        /// Obtem todas as tarefas.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ObterTodasAsTarefas()
         {
-            var tarefa = _context.Tarefas.ToList();
-            if(!tarefa.Any())
+            var tarefa = await _context.Tarefas.ToListAsync();
+            if (!tarefa.Any())
                 return NotFound();
             return Ok(tarefa);
         }
 
-        [HttpGet("ObterPorTitulo")]
-        public IActionResult ObterPorTitulo(string titulo)
+        /// <summary>
+        /// Obtem as tarefas por título, utilizando o operador Contains para permitir buscas parciais.
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <returns>Lista de tarefas contendo no título a substring definida em titulo</returns>
+        [HttpGet("[action]/{titulo}")]
+        public async Task<IActionResult> ObterTarefaPorTitulo(string titulo)
         {
-            var tarefa = _context.Tarefas.Where(tarefa => tarefa.Titulo.Contains(titulo));
-            if(!tarefa.Any())
+            var tarefa = await _context.Tarefas.Where(tarefa => tarefa.Titulo.Contains(titulo)).ToListAsync();
+            if (!tarefa.Any())
                 return NotFound();
             return Ok(tarefa);
         }
 
-        [HttpGet("ObterPorData")]
-        public IActionResult ObterPorData(DateTime data)
+
+        /// <summary>
+        /// Obtem as tarefas por data.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>Lista de tarefas com a data definida em data</returns>
+        [HttpGet("[action]/{data}")]
+        public async Task<IActionResult> ObterTarefaPorData(DateTime data)
         {
-            var tarefa = _context.Tarefas.Where(x => x.Data.Date == data.Date);
-            if(!tarefa.Any())
+            var tarefa = await _context.Tarefas.Where(x => x.Data.Date == data.Date).ToListAsync();
+            if (!tarefa.Any())
                 return NotFound();
             return Ok(tarefa);
         }
 
-        [HttpGet("ObterPorStatus")]
-        public IActionResult ObterPorStatus(EnumStatusTarefa status)
+        /// <summary>
+        /// Obtem as tarefas por status.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{status}")]
+        public async Task<IActionResult> ObterTarefaPorStatus(EnumStatusTarefa status)
         {
-            var tarefa = _context.Tarefas.Where(x => x.Status == status);
-            if(!tarefa.Any())
+            var tarefa = await _context.Tarefas.Where(x => x.Status == status).ToListAsync();
+            if (!tarefa.Any())
                 return NotFound();
             return Ok(tarefa);
         }
 
-        [HttpPost]
-        public IActionResult Criar(Tarefa tarefa)
+        /// <summary>
+        /// Cria uma nova tarefa. A data da tarefa não pode ser vazia (DateTime.MinValue).
+        /// </summary>
+        /// <param name="tarefa"></param>
+        /// <returns></returns>
+        [HttpPost("[action]/{titulo}")]
+        public async Task<IActionResult> CriarTarefa(Tarefa tarefa)
         {
             if (tarefa.Data == DateTime.MinValue)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
 
             _context.Tarefas.Add(tarefa);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(ObterPorId), new { id = tarefa.Id }, tarefa);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Tarefa tarefa)
+        /// <summary>
+        /// Atualiza uma tarefa existente. A data da tarefa não pode ser vazia (DateTime.MinValue).
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tarefa"></param>
+        /// <returns></returns>
+        [HttpPut("[action]/{titulo}")]
+        public async Task<IActionResult> AtualizarTarefa(int id, Tarefa tarefa)
         {
-            var tarefaBanco = _context.Tarefas.Find(id);
+            var tarefaBanco = await _context.Tarefas.FindAsync(id);
 
             if (tarefaBanco == null)
                 return NotFound();
@@ -84,19 +120,25 @@ namespace TrilhaApiDesafio.Controllers
             tarefaBanco.Data = tarefa.Data;
             tarefaBanco.Status = tarefa.Status;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok(tarefaBanco);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Deletar(int id)
+        /// <summary>
+        /// Deleta uma tarefa existente.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> Deletar(int id)
         {
-            var tarefaBanco = _context.Tarefas.Find(id);
+            var tarefaBanco = await _context.Tarefas.FindAsync(id);
 
             if (tarefaBanco == null)
                 return NotFound();
             _context.Tarefas.Remove(tarefaBanco);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
     }
