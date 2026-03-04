@@ -15,13 +15,17 @@ namespace TrilhaApiDesafio.Controllers
         {
             var tarefa = _context.Tarefas.Find(id);
 
-            tarefa == null ? NotFound() : Ok(tarefa);
+            if (tarefa == null) 
+                return NotFound();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
             var tarefa = _context.Tarefas.ToList();
+            if(!tarefa.Any())
+                return NotFound();
             return Ok(tarefa);
         }
 
@@ -29,13 +33,17 @@ namespace TrilhaApiDesafio.Controllers
         public IActionResult ObterPorTitulo(string titulo)
         {
             var tarefa = _context.Tarefas.Where(tarefa => tarefa.Titulo.Contains(titulo));
-            return Ok();
+            if(!tarefa.Any())
+                return NotFound();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterPorData")]
         public IActionResult ObterPorData(DateTime data)
         {
             var tarefa = _context.Tarefas.Where(x => x.Data.Date == data.Date);
+            if(!tarefa.Any())
+                return NotFound();
             return Ok(tarefa);
         }
 
@@ -43,6 +51,8 @@ namespace TrilhaApiDesafio.Controllers
         public IActionResult ObterPorStatus(EnumStatusTarefa status)
         {
             var tarefa = _context.Tarefas.Where(x => x.Status == status);
+            if(!tarefa.Any())
+                return NotFound();
             return Ok(tarefa);
         }
 
@@ -74,7 +84,7 @@ namespace TrilhaApiDesafio.Controllers
             tarefaBanco.Data = tarefa.Data;
             tarefaBanco.Status = tarefa.Status;
 
-            _context.SaveChanges(tarefaBanco);
+            _context.SaveChanges();
             return Ok(tarefaBanco);
         }
 
