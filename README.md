@@ -1,58 +1,125 @@
-# DIO - Trilha .NET - API e Entity Framework
-www.dio.me
+# 🌐 .NET API — Desafio de Projeto
 
-## Desafio de projeto
-Para este desafio, você precisará usar seus conhecimentos adquiridos no módulo de API e Entity Framework, da trilha .NET da DIO.
+![.NET](https://img.shields.io/badge/Framework-.NET-purple?logo=dotnet)
+![C#](https://img.shields.io/badge/Language-C%23-blue?logo=csharp)
+![API](https://img.shields.io/badge/Application-REST%20API-green)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-## Contexto
-Você precisa construir um sistema gerenciador de tarefas, onde você poderá cadastrar uma lista de tarefas que permitirá organizar melhor a sua rotina.
+Projeto desenvolvido como parte da **trilha .NET da Digital Innovation One (DIO)**.
 
-Essa lista de tarefas precisa ter um CRUD, ou seja, deverá permitir a você obter os registros, criar, salvar e deletar esses registros.
+O objetivo deste desafio foi desenvolver uma **API REST utilizando C# e ASP.NET**, aplicando conceitos fundamentais de desenvolvimento backend, persistência de dados e organização de aplicações web.
 
-A sua aplicação deverá ser do tipo Web API ou MVC, fique a vontade para implementar a solução que achar mais adequado.
+Este repositório faz parte do meu processo de aprendizado em **desenvolvimento backend com .NET**.
 
-A sua classe principal, a classe de tarefa, deve ser a seguinte:
+---
 
-![Diagrama da classe Tarefa](diagrama.png)
+# 📚 Sobre o Projeto
 
-Não se esqueça de gerar a sua migration para atualização no banco de dados.
+Este projeto consiste no desenvolvimento de uma **API para gerenciamento de tarefas**, semelhante a uma **TODO List**.
 
-## Métodos esperados
-É esperado que você crie o seus métodos conforme a seguir:
+A aplicação permite realizar operações de criação, leitura, atualização e remoção de tarefas, permitindo organizar atividades com informações como título, descrição, status e data de realização. ([LinkedIn][1])
+
+O desafio foi projetado para praticar a construção de **APIs REST utilizando ASP.NET**, além da integração com banco de dados utilizando **Entity Framework**.
+
+---
+
+# 🎯 Objetivo do Desafio
+
+O principal objetivo deste projeto é colocar em prática conceitos essenciais do desenvolvimento backend em .NET, incluindo:
+
+* criação de **APIs REST**
+* organização de **controllers e modelos**
+* persistência de dados com **Entity Framework**
+* manipulação de dados em banco relacional
+* utilização de **HTTP verbs e rotas REST**
+
+---
+
+# ⚙️ Funcionalidades Implementadas
+
+A API permite gerenciar tarefas através de endpoints REST.
+
+Entre as principais funcionalidades estão:
+
+* 📌 Criar novas tarefas
+* 📋 Listar tarefas cadastradas
+* 🔍 Buscar tarefas específicas
+* ✏️ Atualizar informações de tarefas
+* ❌ Remover tarefas
+
+Cada tarefa pode conter informações como:
+
+* título
+* descrição
+* status
+* data prevista ou de conclusão
+
+---
+
+# 🔗 Estrutura da API
+
+A aplicação segue a estrutura padrão de projetos **ASP.NET Web API**.
+
+Exemplo de endpoints disponíveis:
+
+| Método | Endpoint        | Descrição                     |
+| ------ | --------------- | ----------------------------- |
+| GET    | `/tarefas`      | Lista todas as tarefas        |
+| GET    | `/tarefas/{id}` | Retorna uma tarefa específica |
+| POST   | `/tarefas`      | Cria uma nova tarefa          |
+| PUT    | `/tarefas/{id}` | Atualiza uma tarefa           |
+| DELETE | `/tarefas/{id}` | Remove uma tarefa             |
+
+---
+
+# 🧠 Conceitos Aplicados
+
+Durante o desenvolvimento deste projeto foram explorados conceitos importantes do ecossistema .NET.
+
+### 🌐 Desenvolvimento de APIs REST
+
+Criação de endpoints utilizando:
+
+* controllers
+* rotas
+* verbos HTTP (`GET`, `POST`, `PUT`, `DELETE`)
+
+---
+
+### 🗄️ Persistência de Dados
+
+Utilização do **Entity Framework** como ORM para realizar a comunicação entre a aplicação e o banco de dados.
+
+---
+
+### 📦 Programação Orientada a Objetos
+
+Organização da aplicação utilizando:
+
+* classes
+* entidades
+* separação de responsabilidades
+
+---
+
+### 📑 Modelagem de Dados
+
+Criação de entidades que representam as informações manipuladas pela API.
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+Este projeto foi desenvolvido utilizando:
+
+* **C#**
+* **.NET**
+* **ASP.NET Web API**
+* **Entity Framework**
+* **SQL Server**
+* **Git**
+* **GitHub**
+* **Swagger**
 
 
-**Swagger**
-
-
-![Métodos Swagger](swagger.png)
-
-
-**Endpoints**
-
-
-| Verbo  | Endpoint                | Parâmetro | Body          |
-|--------|-------------------------|-----------|---------------|
-| GET    | /Tarefa/{id}            | id        | N/A           |
-| PUT    | /Tarefa/{id}            | id        | Schema Tarefa |
-| DELETE | /Tarefa/{id}            | id        | N/A           |
-| GET    | /Tarefa/ObterTodos      | N/A       | N/A           |
-| GET    | /Tarefa/ObterPorTitulo  | titulo    | N/A           |
-| GET    | /Tarefa/ObterPorData    | data      | N/A           |
-| GET    | /Tarefa/ObterPorStatus  | status    | N/A           |
-| POST   | /Tarefa                 | N/A       | Schema Tarefa |
-
-Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que exigirem
-
-```json
-{
-  "id": 0,
-  "titulo": "string",
-  "descricao": "string",
-  "data": "2022-06-08T01:31:07.056Z",
-  "status": "Pendente"
-}
-```
-
-
-## Solução
-O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+[1]: https://pt.linkedin.com/posts/developergiovanesouza_github-giovanesouzatrilha-net-api-desafio-activity-7204097176279375872-q3fN?utm_source=chatgpt.com "GitHub - giovanesouza/trilha-net-api-desafio: Construindo um Sistema de Agendamento de Tarefas (API) com Entity Framework | Giovane Souza"
